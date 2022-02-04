@@ -17,7 +17,6 @@ class DataMapperTest {
     DataMapper dataMapper = new DataMapper();
     @BeforeEach
     void setUp() {
-        System.out.println("TESTINNNNGGGG");
         Connection con = null;
         try {
             con = DBconnector.connection();
@@ -47,6 +46,19 @@ class DataMapperTest {
 
     @AfterEach
     void tearDown() {
+
+        Connection con = null;
+        try {
+            con = DBconnector.connection();
+            String SQL = "DELETE FROM startcode_test.usertable";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.executeUpdate();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
