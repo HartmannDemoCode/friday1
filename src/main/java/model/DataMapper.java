@@ -26,6 +26,7 @@ public class DataMapper {
 
             String SQL = "INSERT INTO usertable (fname, lname, pw, phone, address) VALUES (?,?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+
             ps.setString(1, u.getFname());
             ps.setString(2, u.getLname());
             ps.setString(3, u.getPw());
@@ -66,6 +67,28 @@ public class DataMapper {
             ex.printStackTrace();
         }
         return persons;
+    }
+    public  String getUser(String name) throws SQLException, ClassNotFoundException {
+        Connection con = DBconnector.connection();
+        String sql = "Select * from usertable WHERE fname = ?";
+        PreparedStatement pstm = con.prepareStatement(sql);
+        pstm.setString(1, name);
+        ResultSet rs = pstm.executeQuery();
+        rs.next();
+        return rs.getString("fname");
+    }
+
+    public static void main(String[] args)  {
+        DataMapper dataMapper = new DataMapper();
+        dataMapper.createUser(new User("Hanne", "Hansen", "pw", "80808080", "Somewhere"));
+        try {
+            String name = dataMapper.getUser("Hanne");
+            System.out.println(name);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 //    public static void main(String[] args) {
